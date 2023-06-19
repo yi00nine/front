@@ -1,12 +1,13 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin') //简化了 HTML 文件的创建，以便为你的 webpack 包提供服务
+const { VueLoaderPlugin } = require('vue-loader')
 module.exports = function (webpackEnv) {
   const isEnvDevelopment = webpackEnv === 'development'
   const isEnvProduction = webpackEnv === 'production'
   return {
     mode: webpackEnv,
-    entry: './src/index.ts',
+    entry: './src/main.ts',
     output: {
       clean: true,
       filename: '[name].js',
@@ -17,7 +18,7 @@ module.exports = function (webpackEnv) {
       type: 'filesystem', // 使用文件缓存
     },
     resolve: {
-      extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
+      extensions: ['.tsx', '.ts', '.jsx', '.js', '.json', '.vue'],
       alias: {
         src: path.resolve(__dirname, '../src/'),
       }, //配置别名和默认扩展名
@@ -58,6 +59,10 @@ module.exports = function (webpackEnv) {
           ],
         },
         {
+          test: /\.vue$/,
+          loader: 'vue-loader', //解析vue文件
+        },
+        {
           test: /\.(png|svg|jpg|jpeg|gif)$/,
           type: 'asset', //静态资源模块解析静态资源
         },
@@ -76,7 +81,7 @@ module.exports = function (webpackEnv) {
           test: /\.(js|jsx|ts|tsx)$/,
           use: [
             {
-              loader: 'thread-loader',
+              loader: 'thread-loader', //开启两个线程进行打包
               options: {
                 workers: 2,
                 workerParallelJobs: 2,
@@ -92,6 +97,7 @@ module.exports = function (webpackEnv) {
         template: path.resolve(__dirname, '../public/index.html'),
       }),
       new MiniCssExtractPlugin(),
+      new VueLoaderPlugin(),
     ],
   }
 }
