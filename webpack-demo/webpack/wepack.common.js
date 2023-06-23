@@ -29,6 +29,9 @@ module.exports = function (webpackEnv) {
       },
       runtimeChunk: 'single', //最小化入口文件体积
     },
+    resolveLoader: {
+      modules: ['node_modules', './src/loaders'],
+    },
     module: {
       //webpack本身只处理js,json文件,需要loader来帮助处理更多格式的文件
       rules: [
@@ -88,6 +91,13 @@ module.exports = function (webpackEnv) {
               },
             },
           ],
+        },
+        {
+          test: /\.(js|ts)$/,
+          use: {
+            loader: './src/loaders/testLoader.js',
+            options: { params: 'test' },
+          },
         },
       ],
     },
