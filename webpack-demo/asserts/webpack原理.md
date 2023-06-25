@@ -40,3 +40,27 @@ module.exports.raw = true
 - 如何加载本地的 loader
   - 通过 npm link 来进行软连接
   - 在 webpack 中配置 resolveLoader
+
+###### 编写一个 plugin
+
+- webpack 插件是一个具有 apply 方法的 js 对象,webpack 在启动的时候,会先初始化一个 basicPlugin 的实例,在调用实例的 apply 方法传入 compile 对象,插件实例获取到 compiler 对象之后可以监听 webpack 的一些事件来做相应的操作
+
+```js
+const BasicPlugin{
+  apply(compiler){
+    compiler.plugin('compilation',function(compilation) {})
+  }
+}
+```
+
+- compiler 和 compilation 是 plugin 和 webpack 之间通信的关键
+  - compiler 包含了 webpack 所有的配置信息,compiler 是在 webpack 启动的时候被实例化,全局唯一
+  - compilation 对象包含了当前的模块资源,编译生成的资源.以开发模式运行的时候,每当监测到一个文件变化,一个新的 compilation 将被创建
+- 事件流,webpack 通过 tapable 来组织事件流, 应用了观察者模式,和 node 中的 EventEmitter 非常相似,compiler 和 compilation 都继承 tapable,可以直接在这两个对象广播和监听事件
+
+```js
+//广播出事件
+compiler.apply('event-name', params)
+//监听事件
+compiler.plugin('event-name', function () {})
+```

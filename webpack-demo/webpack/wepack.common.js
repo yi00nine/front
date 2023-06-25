@@ -2,6 +2,7 @@ const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin') //简化了 HTML 文件的创建，以便为你的 webpack 包提供服务
 const { VueLoaderPlugin } = require('vue-loader')
+const testPlugin = require('../src/plugins/testPlugin')
 module.exports = function (webpackEnv) {
   const isEnvDevelopment = webpackEnv === 'development'
   const isEnvProduction = webpackEnv === 'production'
@@ -108,6 +109,7 @@ module.exports = function (webpackEnv) {
       }),
       new MiniCssExtractPlugin(),
       new VueLoaderPlugin(),
+      new testPlugin(),
     ],
   }
 }
