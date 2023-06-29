@@ -59,3 +59,13 @@ Docker 将应用程序和该程序的依赖打包到一个文件里面,运行文
 
 - 打包镜像 `docker build -t docker-demo .`
 - 最后在运行起来就好了 `docker run -p 3000:3000  docker-demo`
+
+###### 卷挂载
+
+- 每个容器的启动都是从镜像定义开始的,容器可以创建更新,删除文件,但是删除容器的时候,这些变化就会丢失,Docker 会将所有的变化隔离到这个容器里面,通过卷可以改变这个事情
+- 假设程序的数据存储在容器的 /`etc/demo/demo.db` 目录下,如果你可以在主机持久化这个 todo.db 文件,并对下一个容器进行使用,就可以实现状态的保留.可以通过创建一个卷 ` docker volumn create demo-db`,并将它挂载到存储数据的目录,Docker 完全管理这个卷,包括在磁盘中的位置,我们只需要记住卷的名字,最后运行并且挂载卷 `docker run -dp 3000:3000 --mount type=volumn,src=demo-db,target=/etc/demo docker-demo`
+
+###### 绑定挂载 bind mount
+
+- 允许你从主机的文件系统共享一个目录到容器中,可以使用绑定挂载挂载源代码到容器中
+- `docker run -it --mount type=bind,src="${pwd}",target=/src docker-demo bash` 将主机目录和容器中的 src 目录挂载到一起,可以用绑定挂载进行本地开发
