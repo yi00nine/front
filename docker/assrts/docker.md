@@ -57,5 +57,5 @@ Docker 将应用程序和该程序的依赖打包到一个文件里面,运行文
   }
   ```
 
-- 打包镜像 `docker build -t docker-demo . `
-- 最后在运行起来就好了 `docker run -p 3000:3000 -it docker-demo`
+- 打包镜像 `docker build -t docker-demo .`
+- 最后在运行起来就好了 `docker run -p 3000:3000  docker-demo`
