@@ -1,0 +1,13 @@
+###### vue3目录结构
+- compiler-core : 核心模块,提供编译器的基础功能
+- compiler-dom : 编译器相关模块,提供了将模版编译为渲染函数的Dom版本的功能
+- compiler-sfc : 单文件组件编译模块
+- compiler-ssr : 服务端渲染
+- reactivity : 响应部分
+- runtime-core : 核心模块,提供了运行时的基础功能
+- runtime-dom : 运行时的相关模块,提供基于dom的渲染功能
+- server-render : 服务端渲染
+- shared : 工具函数
+- size-check 
+- template-explorer : 编译文件浏览工具
+- vue : 入口文件
