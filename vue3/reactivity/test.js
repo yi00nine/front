@@ -1,4 +1,4 @@
-import { myProxy, effect } from './effect.js'
+import { reactive, effect } from './effect.js'
 import { computed } from './computed.js'
 import { watch } from './watch.js'
 const data = {
@@ -7,24 +7,27 @@ const data = {
   text: 11,
   a: 1,
   b: 2,
+  c: {
+    d: 1,
+  },
 }
-const obj = myProxy(data)
+const obj = reactive(data)
 /**
  * 测试代码
  */
 
+effect(() => {
+  let a = obj.c.d
+  console.log(a)
+})
 // effect(() => {
-//   let a = obj.ok ? obj.text : '1'
+//   let a = obj.a
 //   console.log(a)
 // })
 
-// setTimeout(() => {
-//   obj.ok = false
-// }, 1000)
-
-// setTimeout(() => {
-//   obj.text = 222 //不应该触发响应式更新
-// }, 3000)
+setTimeout(() => {
+  obj.c.d = 222 //不应该触发响应式更新
+}, 300)
 
 /**
  * effect 嵌套场景
@@ -78,14 +81,14 @@ const obj = myProxy(data)
 /**
  * 监听
  */
-watch(
-  () => obj.a,
-  (a, b) => {
-    console.log(1, a, b)
-  },
-  {
-    immediate: true,
-  }
-)
+// watch(
+//   () => obj.a,
+//   (a, b) => {
+//     console.log(1, a, b)
+//   },
+//   {
+//     immediate: true,
+//   }
+// )
 
-obj.a = 111
+// obj.a = 111
