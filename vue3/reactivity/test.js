@@ -1,6 +1,7 @@
 import { reactive, effect } from './effect.js'
 import { computed } from './computed.js'
 import { watch } from './watch.js'
+import { ref } from './ref.js'
 const data = {
   //原始数据
   ok: true,
@@ -12,12 +13,13 @@ const data = {
   },
 }
 const obj = reactive(data)
+const refVal = ref(1)
 /**
  * 测试代码
  */
 
 effect(() => {
-  let a = obj.c.d
+  let a = refVal.value
   console.log(a)
 })
 // effect(() => {
@@ -26,7 +28,7 @@ effect(() => {
 // })
 
 setTimeout(() => {
-  obj.c.d = 222 //不应该触发响应式更新
+  refVal.value = 2 //不应该触发响应式更新
 }, 300)
 
 /**
@@ -92,3 +94,7 @@ setTimeout(() => {
 // )
 
 // obj.a = 111
+
+/**
+ * ref
+ */
