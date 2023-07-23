@@ -31,7 +31,7 @@ function createRenderer(options) {
     }
     container._vnode = vnode
   }
-  function mountElement(vnode, container) {
+  function mountElement(vnode, container,anchor) {
     const el = (vnode.el = createElement(vnode.type))
     if (typeof vnode.children === 'string') {
       setElementText(el, vnode.children)
@@ -45,19 +45,26 @@ function createRenderer(options) {
         patchProps(key, el, null, vnode.props[key])
       }
     }
-    insert(el, container)
+    insert(el, container,anchor)
   }
   function patchElement(n1, n2) {
     //todo
-    const el = n1.el 
-    el.addEventListener('click', n2.props.onclick)
+    const el = (n2.el = n1.el)
+    const newProps = n2.props
+    const oldProps = n1.props
+    for (const key in newProps) {
+      if (newProps[key] !== oldProps[key]) {
+        patchProps(key, el, oldProps[key], newProps[key])
+      }
+    }
+    for (const key in oldProps) {
+      if (!key in newProps) {
+        patchProps(key, el, oldProps[key], null)
+      }
+    }
+    patchChildren(n1, n2, el)
   }
-  /**
-   * @param n1 - 旧的元素
-   * @param n2 - 新的元素
-   * @param container - 挂载的具体位置
-   */
-  function patch(n1, n2, container) {
+  function patch(n1, n2, container,anchor) {
     if (n1 && n1.type !== n2.type) {
       unmount(n1)
       n1 = null
@@ -65,7 +72,7 @@ function createRenderer(options) {
     const { type } = n2
     if (typeof type === 'string') {
       if (!n1) {
-        mountElement(n2, container)
+        mountElement(n2, container,anchor)
       } else {
         patchElement(n1, n2)
       }
@@ -80,6 +87,77 @@ function createRenderer(options) {
       parent.removeChild(vnode.el)
     }
   }
+  function patchChildren(n1, n2, container) {
+    if (typeof n2.children === 'string') {
+      if (Array.isArray(n1.children)) {
+        n1.children.forEach((el) => {
+          unmount(el)
+        })
+      }
+      setElementText(container, n2.children)
+    } else if (Array.isArray(n2.children)) {
+      if (Array.isArray(n1.children)) {
+        //todo diff
+        const oldChildren = n1.children
+        const newChildren = n2.children
+        const oldLength = n1.children.length
+        const newLength = n2.children.length
+        let lastIndex = 0
+
+        for (let i = 0; i < newLength; i++) {
+          const newVNode = newChildren[i]
+          let find = false
+          for (let j = 0; j < oldLength; j++) {
+            const oldVNode = oldChildren[j]
+            if (newVNode.key === oldVNode.key) {
+              find = true
+              patch(oldVNode, newVNode, container)
+              if (j < lastIndex) {
+                const preVnode = newChildren[i - 1]
+                if (preVnode) {
+                  const anchor = preVnode.el.nextSibling
+                  insert(newVNode.el, container, anchor)
+                }
+              } else {
+                lastIndex = j
+              }
+              break // break退出去
+            }
+          }
+          if(!find){
+            const preVnode = newChildren[i-1]
+            let anchor = null
+            if(preVnode){
+              anchor = preVnode.el.nextSibling
+            }else{
+              anchor = container.firstChild
+            }
+            patch(null,newVNode,container,anchor)
+          }
+          for (let i = 0; i < oldLength; i++) {
+            const oldVnode = oldChildren[i]
+            const has = newChildren.find(el=>{
+              return el.key === oldVnode.key
+            })
+            if(!has) unmount(oldVnode)
+          }
+        }
+      } else {
+        setElementText(container, null)
+        n2.children.forEach((el) => {
+          patch(null, el, container)
+        })
+      }
+    } else {
+      if (Array.isArray(n1.children)) {
+        n1.children.forEach((el) => {
+          unmount(el)
+        })
+      } else if (typeof n1.children === 'string') {
+        setElementText(container, '')
+      }
+    }
+  }
   return { render }
 }
 const renderer = createRenderer({
@@ -89,21 +167,23 @@ const renderer = createRenderer({
   setElementText(el, text) {
     el.textContent = text
   },
-  insert(el, container) {
-    container.appendChild(el)
+  insert(el, container, anchor = null) {
+    container.insertBefore(el, anchor)
   },
   patchProps(key, el, preVal, nextVal) {
     if (/^on/.test(key)) {
-      let invokers ={} //缓存绑定的事件
+      let invokers = {} //缓存绑定的事件
       el._vei = invokers
       let invoker = invokers[key]
       const name = key.slice(2).toLowerCase()
       if (nextVal) {
         if (!invoker) {
           invoker = el._vei[key] = (e) => {
+            if (e.timeStamp < invoker.attached) return
             invoker.value(e)
           }
           invoker.value = nextVal
+          invoker.attached = performance.now()
           el.addEventListener(name, invoker)
         } else {
           invoker.value = nextVal
@@ -128,30 +208,52 @@ const renderer = createRenderer({
 
 // renderer.render(vnode, document.getElementById('app'))
 
-const bol = ref(false)
+// const bol = ref(false)
 
-effect(() => {
-  const vnode = {
-    type: 'div',
-    props: bol.value
-      ? {
-          onclick: () => {
-            console.log('click parent')
-          },
-        }
-      : {},
-    children: [
-      {
-        type: 'p',
-        props: {
-          onclick: () => {
-            console.log(1)
-            bol.value = true
-          },
-        },
-        children:'text'
-      },
-    ],
-  }
-renderer.render(vnode, document.querySelector('#app'))
-})
+// effect(() => {
+//   const vnode = {
+//     type: 'div',
+//     props: bol.value
+//       ? {
+//           onclick: () => {
+//             console.log('click parent')
+//           },
+//         }
+//       : {},
+//     children: [
+//       {
+//         type: 'p',
+//         props: {
+//           onclick: () => {
+//             console.log(1)
+//             bol.value = true
+//           },
+//         },
+//         children: 'text',
+//       },
+//     ],
+//   }
+//   renderer.render(vnode, document.querySelector('#app'))
+// })
+
+const oldVNode = {
+  type: 'div',
+  children: [
+    { type: 'p', children: '1', key: 1 },
+    { type: 'p', children: '2', key: 2 },
+    { type: 'p', children: '4', key: 3 },
+  ],
+}
+const newVNode = {
+  type: 'div',
+  children: [
+    { type: 'p', children: '4', key: 3 },
+    { type: 'p', children: '5', key: 1 },
+    { type: 'p', children: '6', key: 2 },
+  ],
+}
+
+renderer.render(oldVNode, document.getElementById('app'))
+setTimeout(() => {
+  renderer.render(newVNode, document.getElementById('app'))
+}, 1000)
