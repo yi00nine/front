@@ -41,7 +41,6 @@ Docker 将应用程序和该程序的依赖打包到一个文件里面,运行文
   COPY nginx.conf /etc/nginx/conf.d/default.conf
 
   ```
-
 - 创建 nginx 配置文件
 
   ```
@@ -56,7 +55,6 @@ Docker 将应用程序和该程序的依赖打包到一个文件里面,运行文
     }
   }
   ```
-
 - 打包镜像 `docker build -t docker-demo .`
 - 最后在运行起来就好了 `docker run -p 3000:3000  docker-demo`
 
@@ -69,3 +67,33 @@ Docker 将应用程序和该程序的依赖打包到一个文件里面,运行文
 
 - 允许你从主机的文件系统共享一个目录到容器中,可以使用绑定挂载挂载源代码到容器中
 - `docker run -it --mount type=bind,src="${pwd}",target=/src docker-demo bash` 将主机目录和容器中的 src 目录挂载到一起,可以用绑定挂载进行本地开发
+
+###### node部署puppeteer遇到的问题
+
+puppeteer部署在镜像中需要安装浏览器的各种依赖,这里我们是在dockerhub上找到了一个打包好的镜像buildkite/puppeteer,基于这个惊喜打包我们的node服务,打包之后发现页面乱码缺少中文字体,接着设置镜像源去下载中文字体,安装中文字体,遇到apt no public key的错误,dockerfile中添加RUNapt-keyadv--keyserverkeyserver.ubuntu.com--recv-keys4EB27DB2A3B88B8B解决,完整的dockerfile文件如下
+
+```
+FROM buildkite/puppeteer
+RUN  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B 
+RUN sed -i 's/deb.debian.org/mirrors.163.com/g' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y dpkg wget unzip
+RUN cd /tmp && wget http://ftp.cn.debian.org/debian/pool/main/f/fonts-noto-cjk/fonts-noto-cjk_20170601+repack1-3+deb10u1_all.deb && \
+    dpkg -i fonts-noto-cjk_20170601+repack1-3+deb10u1_all.deb    && \
+    wget https://github.com/adobe-fonts/source-sans-pro/releases/download/2.040R-ro%2F1.090R-it/source-sans-pro-2.040R-ro-1.090R-it.zip && \
+    unzip source-sans-pro-2.040R-ro-1.090R-it.zip && cd source-sans-pro-2.040R-ro-1.090R-it  && mv ./OTF /usr/share/fonts/  && \
+    fc-cache -f -v
+RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN apt-get update
+RUN apt-get -y install fontconfig xfonts-utils
+RUN fc-list :lang=zh
+
+WORKDIR /app
+COPY . /app
+RUN rm -rf node_modules
+RUN npm install
+RUN npm run build
+CMD [ "node","dist/main.bundle.js" ]
+
+
+```
