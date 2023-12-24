@@ -97,3 +97,5 @@ CMD [ "node","dist/main.bundle.js" ]
 
 
 ```
+
+这个cmd命令node是主进程,会导致僵尸进程无法停止的问题,需要在node前面添加一个初始化进程.
