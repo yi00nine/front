@@ -88,6 +88,12 @@ RUN apt-get update
 RUN apt-get -y install fontconfig xfonts-utils
 RUN fc-list :lang=zh
 
+ENV TINI_VERSION v0.19.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+RUN chmod +x /tini
+
+ENTRYPOINT ["/tini", "--"]
+
 WORKDIR /app
 COPY . /app
 RUN rm -rf node_modules
@@ -99,3 +105,33 @@ CMD [ "node","dist/main.bundle.js" ]
 ```
 
 这个cmd命令node是主进程,会导致僵尸进程无法停止的问题,需要在node前面添加一个初始化进程.
+
+#### docker多阶段编译
+
+利用多个构建阶段来分离应用程序的构建环境和最终生成的镜像,减小生成镜像的大小
+
+```
+# 第一阶段
+FROM node:14 as builder
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+# 第二阶段
+FROM nginx:alpine
+
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+```
