@@ -1,25 +1,13 @@
 import { useEffect, useState } from "react";
+import Demo1 from "./component/Demo1";
 
-async function queryData() {
-  console.log("queryData");
-  const data = await new Promise<number>((resolve) => {
-    setTimeout(() => {
-      resolve(666);
-    }, 2000);
-  });
-  return data;
-}
 function App() {
-  const [num, setNum] = useState(0);
-
-  useEffect(() => {
-    queryData().then((data) => {
-      setNum(data);
-    });
-  }, []);
+  const [value, setValue] = useState(() => new Date("2025-5-1"));
+  console.log("render app");
   return (
     <>
-      <div className="text-3xl font-bold underline">{num}</div>
+      {/* <Demo1 defaultValue={new Date("2025-5-1")}></Demo1> */}
+      <Demo1 value={value} onChange={setValue}></Demo1>
     </>
   );
 }
