@@ -2,7 +2,7 @@
  * @Author: 1009
  * @Date: 2025-04-17 17:17:19
  * @LastEditors: 1009
- * @LastEditTime: 2025-04-29 10:44:42
+ * @LastEditTime: 2025-04-29 17:25:10
  * @Description: 文件描述
  */
 import { useEffect, useState, forwardRef } from "react";
@@ -10,6 +10,8 @@ import Demo1 from "./component/Demo1";
 import MiniCalendar from "./component/MiniCalendar";
 import Calendar2 from "./component/Calendar";
 import dayjs from "dayjs";
+
+import { IconAdd, IconEmail } from "./component/Icon/IconAdd";
 const Calendar = forwardRef(MiniCalendar);
 function App() {
   const [value, setValue] = useState(() => new Date("2025-5-1"));
@@ -39,9 +41,10 @@ function App() {
         // }}
         dateInnerContent={(value) => {
           return (
-            <div>
-              <p>hello</p>
-            </div>
+            <>
+              <IconAdd spin={true} size="32"></IconAdd>
+              <IconEmail style={{ color: "red" }}></IconEmail>
+            </>
           );
         }}
       ></Calendar2>
