@@ -2,7 +2,7 @@
  * @Author: 1009
  * @Date: 2025-04-17 17:17:19
  * @LastEditors: 1009
- * @LastEditTime: 2025-04-30 11:14:28
+ * @LastEditTime: 2025-04-30 17:53:49
  * @Description: 文件描述
  */
 import { useEffect, useState, forwardRef } from "react";
@@ -10,10 +10,10 @@ import Demo1 from "./component/Demo1";
 import MiniCalendar from "./component/MiniCalendar";
 import Calendar2 from "./component/Calendar";
 import dayjs from "dayjs";
-
 import { IconAdd, IconEmail } from "./component/Icon/IconAdd";
-
 import Space from "./component/Space";
+import WaterMark from "./component/WaterMark";
+
 const Calendar = forwardRef(MiniCalendar);
 function App() {
   const [value, setValue] = useState(() => new Date("2025-5-1"));
@@ -50,17 +50,27 @@ function App() {
           );
         }}
       ></Calendar2> */}
-      <Space
-        direction="horizontal"
-        align="end"
-        size="large"
-        wrap={true}
-        split={<IconAdd spin={true} size="32"></IconAdd>}
+      <WaterMark
+        content={["test", "test", "test"]}
+        getContainer={() => document.body}
       >
-        <div>1</div>
-        <div>1</div>
-        <div style={{ height: "40px" }}>1</div>
-      </Space>
+        <Space
+          direction="horizontal"
+          align="end"
+          size="large"
+          wrap={true}
+          split={<IconAdd spin={true} size="32"></IconAdd>}
+        >
+          <div>1</div>
+          <div>1</div>
+          <div style={{ height: "40px" }}>1</div>
+          <div style={{ height: "40px" }}>1</div>
+          <div style={{ height: "40px" }}>1</div>
+          <div style={{ height: "40px" }}>1</div>
+          <div style={{ height: "40px" }}>1</div>
+          <div style={{ height: "40px" }}>1</div>
+        </Space>
+      </WaterMark>
     </>
   );
 }
