@@ -2,7 +2,7 @@
  * @Author: 1009
  * @Date: 2025-04-17 17:17:19
  * @LastEditors: 1009
- * @LastEditTime: 2025-04-29 17:25:10
+ * @LastEditTime: 2025-04-30 11:14:28
  * @Description: 文件描述
  */
 import { useEffect, useState, forwardRef } from "react";
@@ -12,6 +12,8 @@ import Calendar2 from "./component/Calendar";
 import dayjs from "dayjs";
 
 import { IconAdd, IconEmail } from "./component/Icon/IconAdd";
+
+import Space from "./component/Space";
 const Calendar = forwardRef(MiniCalendar);
 function App() {
   const [value, setValue] = useState(() => new Date("2025-5-1"));
@@ -28,7 +30,7 @@ function App() {
           setValue(val);
         }}
       ></Calendar> */}
-      <Calendar2
+      {/* <Calendar2
         defaultValue={dayjs("2025-05-01")}
         // dateRender={(value) => {
         //   return (
@@ -47,7 +49,18 @@ function App() {
             </>
           );
         }}
-      ></Calendar2>
+      ></Calendar2> */}
+      <Space
+        direction="horizontal"
+        align="end"
+        size="large"
+        wrap={true}
+        split={<IconAdd spin={true} size="32"></IconAdd>}
+      >
+        <div>1</div>
+        <div>1</div>
+        <div style={{ height: "40px" }}>1</div>
+      </Space>
     </>
   );
 }
