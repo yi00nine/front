@@ -2,7 +2,7 @@
  * @Author: 1009
  * @Date: 2025-04-17 17:17:19
  * @LastEditors: 1009
- * @LastEditTime: 2025-05-08 11:11:52
+ * @LastEditTime: 2025-05-09 17:58:58
  * @Description: 文件描述
  */
 import { useEffect, useState, forwardRef } from "react";
@@ -14,12 +14,30 @@ import { IconAdd, IconEmail } from "./component/Icon/IconAdd";
 import Space from "./component/Space";
 import WaterMark from "./component/WaterMark";
 import Deck from "./pages/GestureDemo";
+import { MessageProvide } from "./component/Message";
+import { ConfigProvider } from "./component/Message/ConfigProvide";
+import { useMessage } from "./component/Message/useMessage";
 const Calendar = forwardRef(MiniCalendar);
 function App() {
   const [value, setValue] = useState(() => new Date("2025-5-1"));
   console.log("render app");
+  function Btn() {
+    const message = useMessage();
+    return (
+      <button
+        onClick={() => {
+          message.add({
+            content: "请求成功",
+            duration: 1000,
+          });
+        }}
+      >
+        成功
+      </button>
+    );
+  }
   return (
-    <>
+    <ConfigProvider>
       {/* <Demo1 defaultValue={new Date("2025-5-1")}></Demo1> */}
       {/* <Demo1 value={value} onChange={setValue}></Demo1> */}
       {/* <Calendar
@@ -72,7 +90,8 @@ function App() {
         </Space>
       </WaterMark> */}
       <Deck></Deck>
-    </>
+      <Btn></Btn>
+    </ConfigProvider>
   );
 }
 

@@ -18,6 +18,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-spring": "^9.7.5",
+    "react-transition-group": "^4.4.5",
     "tailwindcss": "^4.1.4"
   },
   "devDependencies": {
@@ -25,6 +26,7 @@
     "@types/lodash-es": "^4.17.12",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@types/react-transition-group": "^4.4.12",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.22.0",
     "eslint-plugin-react-hooks": "^5.2.0",
