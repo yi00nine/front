@@ -183,7 +183,7 @@ const Calendar = (props: CalendarProps) => {
     changeDate(date);
   };
   return (
-    <div className="w-full h-7">
+    <div className="w-full">
       <HeaderCalender
         curMonth={curMonth}
         preMonthHandler={preMonthHandler}
