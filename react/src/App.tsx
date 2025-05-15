@@ -1,10 +1,3 @@
-/*
- * @Author: 1009
- * @Date: 2025-04-17 17:17:19
- * @LastEditors: 1009
- * @LastEditTime: 2025-05-14 16:01:34
- * @Description: 文件描述
- */
 import { useEffect, useState, forwardRef, useRef } from "react";
 import Demo1 from "./component/Demo1";
 import MiniCalendar from "./component/MiniCalendar";
@@ -18,11 +11,14 @@ import { MessageProvide } from "./component/Message";
 import { ConfigProvider } from "./component/Message/ConfigProvide";
 import { useMessage } from "./component/Message/useMessage";
 import { Mask } from "./component/Onboarding/Mask";
-import { Popover, Button } from "antd";
+import { Popover, Button, Checkbox, Input } from "antd";
 import { OnBoarding } from "./component/Onboarding";
+import Form from "./component/Form";
 const Calendar = forwardRef(MiniCalendar);
 function App() {
   const [value, setValue] = useState(() => new Date("2025-5-1"));
+  const form = useRef(null);
+
   function Btn() {
     const message = useMessage();
     return (
@@ -39,7 +35,13 @@ function App() {
       </div>
     );
   }
+  const onFinish = (values: any) => {
+    console.log("Success:", values);
+  };
 
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("Failed:", errorInfo);
+  };
   return (
     <ConfigProvider>
       <WaterMark
@@ -127,6 +129,59 @@ function App() {
           },
         ]}
       ></OnBoarding>
+      <Form
+        initialValues={{ remember: true, username: "test" }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        ref={form}
+      >
+        <Form.Item
+          label="Username"
+          name="username"
+          rules={[{ required: true, message: "请输入用户名!" }]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: "请输入密码!" }]}
+        >
+          <Input.TextArea />
+        </Form.Item>
+
+        <Form.Item name="remember" valuePropName="checked">
+          <Checkbox>记住我</Checkbox>
+        </Form.Item>
+
+        <Form.Item>
+          <div>
+            <Button type="primary" htmlType="submit">
+              登录
+            </Button>
+          </div>
+        </Form.Item>
+      </Form>
+      <Button
+        type="primary"
+        onClick={() => {
+          console.log(form.current?.getFieldsValue());
+        }}
+      >
+        打印表单值
+      </Button>
+
+      <Button
+        type="primary"
+        onClick={() => {
+          form.current?.setFieldsValue({
+            username: "东东东",
+          });
+        }}
+      >
+        设置表单值
+      </Button>
     </ConfigProvider>
   );
 }
