@@ -14,6 +14,8 @@ import { Mask } from "./component/Onboarding/Mask";
 import { Popover, Button, Checkbox, Input } from "antd";
 import { OnBoarding } from "./component/Onboarding";
 import Form from "./component/Form";
+import useTestStore from "./store/index";
+
 const Calendar = forwardRef(MiniCalendar);
 function App() {
   const [value, setValue] = useState(() => new Date("2025-5-1"));
@@ -42,6 +44,9 @@ function App() {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
+
+  const uptAAA = useTestStore((state) => state.uptAAA);
+  const aaa = useTestStore((state) => state.aaa);
   return (
     <ConfigProvider>
       <WaterMark
@@ -97,7 +102,7 @@ function App() {
         {/* <Deck></Deck> */}
         <Btn></Btn>
       </WaterMark>
-      <OnBoarding
+      {/* <OnBoarding
         steps={[
           {
             selector: "xxx",
@@ -128,7 +133,7 @@ function App() {
             placement: "bottom",
           },
         ]}
-      ></OnBoarding>
+      ></OnBoarding> */}
       <Form
         initialValues={{ remember: true, username: "test" }}
         onFinish={onFinish}
@@ -182,6 +187,14 @@ function App() {
       >
         设置表单值
       </Button>
+      <div>
+        <input
+          type="text"
+          onChange={(e) => uptAAA(e.target.value)}
+          value={aaa}
+        />
+        {aaa}
+      </div>
     </ConfigProvider>
   );
 }
