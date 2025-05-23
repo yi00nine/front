@@ -1,0 +1,114 @@
+<mxfile host="65bd71144e">
+    <diagram id="-hZGuCcW8BoxsfZZDIJP" name="第 1 页">
+        <mxGraphModel dx="3436" dy="963" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="初始化render" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="250" y="50" width="70" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="4" target="5">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="初始化调用render" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-1350" y="50" width="120" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="5" target="7">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="初始化wipRoot，nextUnitOfWork" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="-1350" y="130" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="7" target="9">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="requestIdleCallback循环调用workloop分批处理reactElement转fiber" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="-1350" y="220" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="9" target="11">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="performUnitOfWork来处理当前的节点和返回下一个节点（按照深度优先的策略去处理子节点）" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="-1350" y="310" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="判断函数组件还是原生标签，" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="-1350" y="440" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="13" target="26">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="1.全局设置wipFiber、stateHookIndex&lt;div&gt;2.对当前fiber设置stateHooks、effectHooks&lt;/div&gt;&lt;div&gt;3.执行函数组件，拿到返回值为children&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=0;align=left;horizontal=1;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="-1430" y="540" width="120" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="17" target="26">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="根据当前fiber的props设置属性" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="-1270" y="540" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="11" target="13">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-1420" y="510" as="sourcePoint"/>
+                        <mxPoint x="-1320" y="510" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="22" value="函数组件" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" connectable="0" vertex="1" parent="21">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="11" target="17">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-1260" y="520" as="sourcePoint"/>
+                        <mxPoint x="-1340" y="560" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="24" value="Label" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" connectable="0" vertex="1" parent="23">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="原生标签" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="23">
+                    <mxGeometry x="-0.04" y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="34" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="26" target="33">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="reconcileChildren函数处理子节点，通过alternate拿到旧的fiber和新的节点做diff生成新的fiber，通过child，sibling、return生成链表。" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="-1350" y="710" width="120" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="41" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="33" target="40">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="深度优先遍历虚拟dom，生成完整的fiber链表" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="-1350" y="850" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="函数组件调用useState，&lt;div&gt;&lt;div&gt;通过全局变量wipFiber和stateHookIndex，确定fiber以及stateHook。合并stateHook的值保存到fiber的stateHooks变量中&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+                    <mxGeometry x="-1650" y="470" width="140" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" style="edgeStyle=none;html=1;entryX=0.017;entryY=0.582;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="35" target="13">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="函数组件调用useEffect，&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;初始化effectHook保存到&lt;br&gt;&lt;/font&gt;&lt;div&gt;&lt;div&gt;wipFiber的&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;effectHooks&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+                    <mxGeometry x="-1650" y="585" width="140" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" style="edgeStyle=none;html=1;entryX=-0.017;entryY=0.591;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="37" target="13">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value="调用setState，在stateHook的queue里面添加副作用函数，闭包拿到当前的fiber节点，将当前的fiber节点设置为包装成wipRoot并设置nextUnitOfWork，在workLoop里面进行处理，对新旧fiber做对比&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="-1655" y="190" width="150" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="43" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="40" target="42">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="调用commitRoot，&lt;div&gt;1.根据deletions删除节点&lt;/div&gt;&lt;div&gt;2. 深度优先遍历子节点，通过fiber的effectTag来做不同的操作。&lt;/div&gt;" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="-1350" y="950" width="120" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="42" value="调用commitEffect，先递归执行所有的cleanUp清理掉上一次的挂载（传入的依赖deps和上一次不同时会执行清理操作），接着执行effect，首次渲染执行所有的effect，否则就是在依赖变化的时候执行" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="-1350" y="1100" width="120" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" style="edgeStyle=none;html=1;entryX=-0.015;entryY=0.625;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="39" target="5">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
